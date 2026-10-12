@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f0e6">
+<meta name="description" content="给悦悦的一封生日来信。金粉聚成蛋糕，再落成一份手写祝福。">
+<title>悦悦，生日快乐</title>
+<style>
+@font-face{font-family:BirthdaySerif;src:url('__FONT_DATA__') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+:root{color-scheme:light;--ink:#5b5548;--soft:#817b6f;--gold:#af8c51;--paper:#f6f0e6}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{background:var(--paper);color:var(--ink);font-family:BirthdaySerif,'Noto Serif SC','Songti SC','SimSun',serif;-webkit-tap-highlight-color:transparent}#paper{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;opacity:.65;pointer-events:none;user-select:none}#theatre{position:fixed;inset:0;background:#17131b;opacity:0;pointer-events:none}button{font:inherit;cursor:pointer;touch-action:manipulation;border:0;background:none;color:inherit}button:focus-visible{outline:1px solid #8c704b;outline-offset:7px}button:disabled{cursor:wait}#scene,#particles{position:fixed;inset:0;display:block;width:100%;height:100%;pointer-events:none}
+header{position:fixed;z-index:5;inset:max(16px,env(safe-area-inset-top)) 15px auto auto}.icon-button{display:grid;place-items:center;width:44px;height:44px;padding:12px;color:var(--soft);transition:opacity .3s}.icon-button img{width:22px;height:22px;opacity:.50}.icon-button:hover img{opacity:.85}
+#intro{position:fixed;z-index:4;inset:0;display:flex;justify-content:center;align-items:center;text-align:center;transition:opacity 1s,transform 1s}.invitation{padding:30px;margin-top:-26px}.eyebrow{font-size:13px;letter-spacing:3px;color:#8c8170;margin:0 0 26px}.invitation h1{font-size:clamp(21px,4.8vw,28px);letter-spacing:3px;font-weight:400;line-height:1.8;margin:0 0 39px}.text-link{position:relative;font-size:15px;letter-spacing:3px;padding:12px 7px 14px;min-height:44px;text-decoration:underline;text-decoration-thickness:.65px;text-underline-offset:12px;text-decoration-color:#a99b85}.hint{font-size:12px;color:#a49987;letter-spacing:1.5px;line-height:1.9;margin:26px 0 0}#intro.leaving{opacity:0;transform:translateY(-10px);pointer-events:none}#intro[hidden]{display:none}
+#greeting{position:fixed;z-index:2;left:50%;top:23.24%;transform:translate(-50%,-50%);margin:0;font-size:var(--title-size,24px);letter-spacing:.68em;padding-left:.68em;font-weight:400;white-space:nowrap;opacity:0;transition:none}#wish{position:fixed;z-index:2;left:50%;top:68.11%;transform:translate(-50%,-50%);margin:0;font-size:var(--wish-size,14px);letter-spacing:.035em;font-weight:400;white-space:nowrap;opacity:0;transition:none;color:#60594b}#whisper{position:fixed;z-index:3;left:20px;right:20px;top:77%;text-align:center;margin:0;font-size:14px;line-height:2;letter-spacing:1.3px;color:#706552;opacity:0}
+#actions{position:fixed;z-index:3;left:50%;top:83.8%;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;gap:27px;opacity:0;white-space:nowrap;pointer-events:none}body.started #actions{pointer-events:auto}#replay{font-size:var(--replay-size,15px);letter-spacing:.15em;color:#797265;text-decoration-color:#958c7b;min-width:90px}#pause{position:fixed;z-index:4;left:18px;bottom:max(16px,env(safe-area-inset-bottom));display:flex;align-items:center;gap:7px;min-height:44px;padding:10px 7px;opacity:0;font-size:12px;letter-spacing:1.2px;color:#93856e;transition:opacity .5s}#pause img{width:13px;height:13px;opacity:.75}#pause[hidden]{display:none}#audio-note{position:fixed;top:70px;right:24px;left:24px;text-align:right;font:11px/1.7 sans-serif;color:#8f7960;z-index:8}.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(min-width:700px){header{right:30px;top:24px}.invitation h1{font-size:27px}.invitation .eyebrow{font-size:14px}#pause{left:32px;bottom:24px}}
+@media(max-height:540px) and (min-aspect-ratio:13/10){header{top:8px;right:10px}#greeting{top:13.8%}#wish{top:76%}#actions{top:92%}#pause{bottom:4px;left:16px}#whisper{top:78%}.invitation{margin-top:-10px}.eyebrow{margin-bottom:12px}.invitation h1{font-size:21px;margin-bottom:14px}.hint{margin-top:14px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<img id="paper" src="__PAPER_DATA__" alt="" aria-hidden="true" draggable="false"><div id="theatre" aria-hidden="true"></div><canvas id="particles" aria-hidden="true"></canvas><canvas id="scene" role="img" aria-label="烛光下奶油白与香槟金的粒子聚成生日蛋糕，再回到纸面汇成手写的悦悦名字与细长笔尾"></canvas>
+<header><button id="sound" class="icon-button" aria-label="关闭音乐" aria-pressed="true" title="关闭音乐"><img id="sound-icon" src="__MUSIC_ICON__" alt=""></button></header>
+<main id="intro"><div class="invitation"><p class="eyebrow">给悦悦的一封生日来信</p><h1>这份祝福，<br>慢慢送给你。</h1><button id="start" class="text-link" disabled>正在准备</button><p class="hint">打开声音，慢慢看。</p></div></main>
+<h1 id="greeting">生日快乐</h1><h2 class="visually-hidden">悦悦，生日快乐</h2>
+<p id="wish">愿新的一岁，自在、明亮。</p><p id="whisper" role="status" aria-live="polite"></p>
+<div id="actions" inert><button id="replay" class="text-link" aria-label="重新播放生日动画">再看一遍</button></div>
+<button id="pause" inert aria-label="暂停动画和音乐"><img id="pause-icon" src="__PAUSE_ICON__" alt=""><span id="pause-label">暂停</span></button><p id="audio-note" role="status"></p>
+<script>
+/* 更换收件人时，需要同步替换手写字迹资产；本文件内置所有资源，可离线打开。 */
+const CONFIG={name:'悦悦',greeting:'生日快乐',wish:'愿新的一岁，自在、明亮。',duration:34};
+const ASSETS={signature:'__SIGNATURE_DATA__',bbox:__SIGNATURE_BBOX__,music:'__MUSIC_ICON__',muted:'__MUTED_ICON__',pause:'__PAUSE_ICON__',play:'__PLAY_ICON__'};
+(() => {
+'use strict';
+const $=id=>document.getElementById(id),canvas=$('scene'),ctx=canvas.getContext('2d',{alpha:true});
+if(!ctx){$('start').textContent='请用其他浏览器打开';$('audio-note').textContent='当前浏览器暂不支持画面。';return;}
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,signature=new Image();
+let W=innerWidth,H=innerHeight,DPR=1,layout={},particles=[],dust=[],shape=[],ready=false;
+let started=false,paused=false,hiddenPause=false,elapsed=0,lastTime=0,stage=-1,drawDirty=true,ambient=0,night=0;
+let seed=9127103;function random(){seed=(1664525*seed+1013904223)>>>0;return seed/4294967296;}const rand=(a,b)=>a+(b-a)*random(),clamp=x=>Math.max(0,Math.min(1,x));const smooth=x=>{x=clamp(x);return x*x*(3-2*x);},mix=(a,b,u)=>a+(b-a)*u;
+const colors=['#ae8342','#796346','#b5955c','#8b7655','#c8ad78','#5e584c'];
+const sprites=colors.map(color=>{const c=document.createElement('canvas');c.width=c.height=24;const g=c.getContext('2d'),r=g.createRadialGradient(12,12,0,12,12,12);r.addColorStop(0,color);r.addColorStop(.33,color);r.addColorStop(.55,color+'b0');r.addColorStop(.8,color+'28');r.addColorStop(1,color+'00');g.fillStyle=r;g.fillRect(0,0,24,24);return c;});
+const nightColors=['#efc18b','#fff7ef','#f5dccb','#cfa27d','#f0b9aa','#ffd064'];
+const nightSprites=nightColors.map(color=>{const c=document.createElement('canvas');c.width=c.height=32;const g=c.getContext('2d'),r=g.createRadialGradient(16,16,0,16,16,16);r.addColorStop(0,'#fffdf7');r.addColorStop(.17,color);r.addColorStop(.34,color+'a0');r.addColorStop(.65,color+'24');r.addColorStop(1,color+'00');g.fillStyle=r;g.fillRect(0,0,32,32);return c;});
+const rgb=list=>list.map(c=>[parseInt(c.slice(1,3),16)/255,parseInt(c.slice(3,5),16)/255,parseInt(c.slice(5,7),16)/255]);const paperRGB=rgb(colors),nightRGB=rgb(nightColors);
+let gpu=null,pose={co:1,si:0,bob:0};
+try{
+ const surface=$('particles'),gl=surface.getContext('webgl',{alpha:true,antialias:false,premultipliedAlpha:true,depth:false});
+ if(gl){
+  const compile=(type,src)=>{const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s;};
+  const vs=compile(gl.VERTEX_SHADER,'attribute vec2 p;attribute float s;attribute vec4 c;uniform vec2 v;uniform float d;varying vec4 col;void main(){gl_Position=vec4(p.x/v.x*2.0-1.0,1.0-p.y/v.y*2.0,0.0,1.0);gl_PointSize=s*d;col=c;}');
+  const ps=compile(gl.FRAGMENT_SHADER,'precision mediump float;varying vec4 col;uniform float n;void main(){float r=length(gl_PointCoord-vec2(.5));float a=col.a*(1.0-smoothstep(.08,.5,r));float core=1.0-smoothstep(.0,.16,r);vec3 ink=mix(col.rgb,vec3(1.0,.98,.94),core*n*.24);gl_FragColor=vec4(ink*a,a);}');
+  const program=gl.createProgram();gl.attachShader(program,vs);gl.attachShader(program,ps);gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw new Error('particle shader');gl.useProgram(program);
+  const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,60000*7*4,gl.STREAM_DRAW);
+  for(const [name,count,offset] of [['p',2,0],['s',1,8],['c',4,12]]){const loc=gl.getAttribLocation(program,name);gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,count,gl.FLOAT,false,28,offset);}
+  gl.enable(gl.BLEND);gl.clearColor(0,0,0,0);
+  gpu={gl,surface,stream:new Float32Array(60000*7),count:0,viewport:gl.getUniformLocation(program,'v'),density:gl.getUniformLocation(program,'d'),night:gl.getUniformLocation(program,'n')};
+ }
+}catch{$('particles').hidden=true;gpu=null;}
+document.body.dataset.renderer=gpu?'webgl':'canvas';
+const tiers=[{r:155,y:35,h:70},{r:122,y:-25,h:60},{r:94,y:-76,h:51}];
+function sampleSignature(){
+ const [x,y,w,h]=ASSETS.bbox,c=document.createElement('canvas');c.width=700;c.height=Math.round(700*h/w);const g=c.getContext('2d');g.drawImage(signature,x,y,w,h,0,0,c.width,c.height);const data=g.getImageData(0,0,c.width,c.height).data;shape=[];
+ for(let yy=0;yy<c.height;yy+=2)for(let xx=0;xx<c.width;xx+=2)if(data[(Math.floor(yy)*c.width+Math.floor(xx))*4+3]>55)shape.push({x:xx/c.width,y:yy/c.height});
+ if(!shape.length)throw new Error('empty signature');
+}
+function cakePoint(){
+ let x=0,y=0,z=0,color=0,size=rand(.65,1.35),kind='cake',tier=0;const r=random(),pick=random();tier=pick<.49?0:(pick<.79?1:2);const q=tiers[tier],angle=rand(0,Math.PI*2);
+ if(r<.40){const v=random(),rho=q.r*(1-.018*Math.cos(v*Math.PI));x=rho*Math.cos(angle);z=rho*Math.sin(angle);y=q.y+v*q.h;color=tier===2?1:(random()<.70?0:4);if(v>.43&&v<.56){color=tier===2?2:3;size*=.6;}}
+ else if(r<.56){const pickCap=random();tier=pickCap<.60?2:(pickCap<.85?1:0);const cap=tiers[tier],rho=(cap.r-4)*Math.sqrt(random());x=rho*Math.cos(angle);z=rho*Math.sin(angle);y=cap.y-2.8*(1-rho*rho/(cap.r*cap.r))-rand(0,1.1);color=tier===2?1:(random()<.6?2:0);size*=.92;}
+ else if(r<.74){tier=random()<.28?0:(random()<.45?1:2);const a=tiers[tier],rho=a.r+rand(-2,2)+Math.sin(angle*[13,10,8][tier])*1.8;x=rho*Math.cos(angle);z=rho*Math.sin(angle);y=a.y+4+Math.pow(.5+.5*Math.sin(angle*[13,10,8][tier]),2)*5+rand(-2,2);color=1;size*=1.06;}
+ else if(r<.82){const blossoms=[32,25,18][tier],center=Math.round(angle/(Math.PI*2)*blossoms)/blossoms*Math.PI*2,phi=rand(0,Math.PI*2),theta=rand(0,Math.PI*2),radius=rand(3,7),rho=q.r-5+Math.cos(phi)*radius;x=rho*Math.cos(center)+Math.cos(theta)*radius*.6;z=rho*Math.sin(center)+Math.sin(theta)*radius*.6;y=q.y-1-Math.abs(Math.sin(phi))*radius; color=1;size*=.95;}
+ else if(r<.88){const rho=q.r+rand(-.6,.6);x=rho*Math.cos(angle);z=rho*Math.sin(angle);y=q.y+q.h*(random()<.5?.96:.56)+rand(-.7,.7);color=random()<.65?0:2;size*=.9;}
+ else if(r<.91){const rho=rand(167,176);x=rho*Math.cos(angle);z=rho*Math.sin(angle);y=110+rand(-.8,.8);color=3;size*=.65;tier=0;}
+ else if(r<.945){const a=rand(0,Math.PI*2);x=9*Math.cos(a);z=9*Math.sin(a);y=rand(-151,-76);color=Math.sin((y+151)*.20+a)>0.82?4:1;size*=1.2;kind='candle';tier=3;}
+ else if(r<.96){y=rand(-177,-151);const a=rand(0,Math.PI*2),rho=(1-Math.abs((y+164)/13))*6;x=rho*Math.cos(a);z=rho*Math.sin(a);color=random()<.75?5:1;size*=1.3;kind='flame';tier=3.5;}
+ else{const rho=q.r+rand(6,36);x=rho*Math.cos(angle);z=rho*Math.sin(angle);y=q.y+rand(-32,25);color=tier===2?1:2;size*=.72;kind='halo';}
+ return{x,y,z,color,size,kind,tier};
+}
+function createParticles(){
+ seed=9127103;const count=gpu?(W<700?34000:45000):(W<700?14500:19000);particles=[];
+ for(let i=0;i<count;i++){const p=cakePoint(),a=rand(0,Math.PI*2),r=rand(140,340),q=shape[Math.floor(random()*shape.length)];particles.push({...p,tx:q.x,ty:q.y,ix:rand(-.65,.65),iy:rand(-.52,.52),sx:Math.cos(a)*r,sy:Math.sin(a)*r*.60-20,delay:rand(0,1)+p.tier*.78,phase:rand(0,6.28),speed:rand(.8,1.7),settle:random()});}
+ dust=Array.from({length:90},()=>({x:rand(-1,1),y:rand(-1,1),r:rand(.7,1.8),phase:rand(0,6.28),speed:rand(.25,.9)}));document.body.dataset.particles=String(count);
+}
+function resize(){
+ const compact=W<700;W=innerWidth;H=innerHeight;DPR=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(W*DPR);canvas.height=Math.round(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);if(gpu){gpu.surface.width=canvas.width;gpu.surface.height=canvas.height;gpu.gl.viewport(0,0,canvas.width,canvas.height);}
+ const landscape=H<540&&W/H>1.3,letterWidth=landscape?Math.min(W*.76,780):(W<700?Math.min(W,H*.62,560):Math.min(500,H*.49)),scale=letterWidth/390;
+ const baseNameWidth=landscape?Math.min(W*.36,H*.74):letterWidth*(601/853),nameWidth=baseNameWidth*1.085,nameHeight=nameWidth*ASSETS.bbox[3]/ASSETS.bbox[2];
+ const cx=(landscape?W*.60:W*.5+letterWidth*(493/853-.5))-(nameWidth-baseNameWidth)/2,ny=landscape?H*.31:H*(739/1844);
+ layout={landscape,letterWidth,scale,name:{x:cx-nameWidth/2,y:ny,w:nameWidth,h:nameHeight},cakeScale:Math.min(letterWidth/455,Math.max(120,H-220)/390)*.98,cakeX:W*.5,cakeY:landscape?H*.49:H*.50-38};
+ document.documentElement.style.setProperty('--title-size',(landscape?22:24*scale)+'px');document.documentElement.style.setProperty('--wish-size',(landscape?14:Math.max(12.4,14*scale))+'px');document.documentElement.style.setProperty('--replay-size',(landscape?14:Math.max(14,15*scale))+'px');
+ if(ready&&(!particles.length||compact!==(W<700)))createParticles();drawDirty=true;
+}
+function dot(x,y,size,color,alpha){if(gpu){const i=gpu.count*7;if(i+7>gpu.stream.length)return;const c=night>.45?nightRGB[color]:paperRGB[color],a=gpu.stream;a[i]=x;a[i+1]=y;a[i+2]=size;a[i+3]=c[0];a[i+4]=c[1];a[i+5]=c[2];a[i+6]=clamp(alpha);gpu.count++;return;}ctx.globalAlpha=clamp(alpha);ctx.drawImage(night>.45?nightSprites[color]:sprites[color],x-size/2,y-size/2,size,size);}
+function flushParticles(){if(!gpu)return;const gl=gpu.gl;gl.clear(gl.COLOR_BUFFER_BIT);if(!gpu.count)return;gl.blendFunc(gl.ONE,night>.45?gl.ONE:gl.ONE_MINUS_SRC_ALPHA);gl.uniform2f(gpu.viewport,W,H);gl.uniform1f(gpu.density,DPR);gl.uniform1f(gpu.night,night);gl.bufferSubData(gl.ARRAY_BUFFER,0,gpu.stream.subarray(0,gpu.count*7));gl.drawArrays(gl.POINTS,0,gpu.count);}
+function cakePosition(p,t){const xx=p.x*pose.co+p.z*pose.si,z=-p.x*pose.si+p.z*pose.co,f=900/(900-z);let y=p.y;if(p.kind==='flame'&&!reduced)y+=Math.sin(t*6+p.phase)*1.4;if(p.kind==='halo'&&!reduced)y+=Math.sin(t*.8+p.phase)*5;return{x:layout.cakeX+xx*f*layout.cakeScale,y:layout.cakeY+(y*.94+z*.30+pose.bob)*f*layout.cakeScale,depth:.44+(z+180)/360*.50};}
+function frostingRings(t){if(t<2||t>=18.2)return;const fade=(1-smooth((t-14)/4.2));ctx.save();for(let i=0;i<3;i++){const q=tiers[i],alpha=smooth((t-1.7-i*.85)/4.9)*fade;if(alpha<=0)continue;for(const band of [0,1]){ctx.beginPath();for(let j=0;j<=180;j++){const a=j/180*Math.PI*2,r=q.r+(band?1:3.5),p={x:r*Math.cos(a),z:r*Math.sin(a),y:band?q.y+q.h*.56:q.y+4+Math.pow(.5+.5*Math.sin(a*[13,10,8][i]),2)*5,kind:'cake'};const s=cakePosition(p,t);if(j===0)ctx.moveTo(s.x,s.y);else ctx.lineTo(s.x,s.y);}ctx.globalAlpha=alpha*(band?.22:.46);ctx.strokeStyle=band?'#ecc18b':'#fff1df';ctx.lineWidth=(band?.5:.65)*Math.min(layout.cakeScale,1.3);ctx.stroke();}}ctx.restore();}
+function renderDust(t,ending){
+ const n=layout.name,origin={x:n.x+12,y:n.y+n.h*.99};
+ for(let i=0;i<dust.length;i++){const d=dust[i];if(ending){const drift=reduced?0:Math.sin(t*.18+d.phase)*3;dot(origin.x+d.x*layout.letterWidth*.20+drift,origin.y+d.y*35*layout.scale,Math.max(2,d.r*2.2*layout.scale),i%4===0?0:4,.18+.22*(.5+.5*Math.sin(d.phase+t*.17)));}else if(i<(night>.5?75:30)){dot(W*.5+d.x*Math.min(W*.46,380),H*.5+d.y*H*.38+(reduced?0:Math.sin(t*d.speed+d.phase)*9),2.2*d.r,night>.5?1:2,night>.5?.32:.12);}}
+}
+function render(t){
+ ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';ctx.clearRect(0,0,W,H);if(gpu)gpu.count=0;if(!ready){flushParticles();return;}
+ night=started?smooth((t-.65)/1.05)*(1-smooth((t-14.4)/4.2)):0;$('theatre').style.opacity=night;$('sound-icon').style.filter='invert('+night+')';
+ const angle=reduced?.23:.23+Math.max(0,Math.min(t,14)-4)*.095;pose={co:Math.cos(angle),si:Math.sin(angle),bob:reduced?0:Math.sin(t*.6)*1.5};
+ const n=layout.name,ink=smooth((t-22.8)/2.8),scatter=smooth((t-14)/4.2),ending=t>=25.7;ctx.globalCompositeOperation=night>.45?'lighter':'source-over';
+ if(started){
+  for(let i=0;ink<1&&i<particles.length;i++){
+   const p=particles[i],c=cakePosition(p,t);let x=c.x,y=c.y,a=1,color=p.color;if(t>=18.2&&i>=8000)continue;
+   if(t<8.8){const u=smooth((t-.6-p.delay)/4.9),turn=reduced?0:Math.sin(u*Math.PI)*.4,co=Math.cos(turn),si=Math.sin(turn);x=mix(W*.5+(p.ix*W*co-p.iy*H*si),c.x,u);y=mix(H*.48+(p.ix*W*si+p.iy*H*co),c.y,u);a=smooth((t-p.delay)/1.8)*(.28+.72*u);}
+   else if(t>=14&&t<18.2){x=mix(c.x,layout.cakeX+p.sx*layout.cakeScale,scatter);y=mix(c.y,layout.cakeY+p.sy*layout.cakeScale,scatter);a=1-scatter*.55;}
+   else if(t>=18.2){const progress=clamp((t-18.2-Math.min(p.delay,.9)*.5)/5.3),u=1-Math.pow(1-progress,3);x=mix(layout.cakeX+p.sx*layout.cakeScale,n.x+p.tx*n.w,u);y=mix(layout.cakeY+p.sy*layout.cakeScale,n.y+p.ty*n.h,u);color=u>.70?1:p.color;a=(.45+u*.38)*(1-ink);}
+   const jiggle=reduced?0:Math.sin(t*p.speed+p.phase)*(.35+Math.max(0,1-t/8)),flicker=reduced?.8:.77+.23*Math.sin(p.phase+t*p.speed);
+   const size=p.size*(W<700?3.05:3.25)*Math.min(layout.cakeScale,1.25),depth=t<14?c.depth:1;if(p.kind==='halo'&&t<14)a*=.38;if(p.kind==='flame'&&t<14)a*=.40;
+   if(a>.008)dot(x+jiggle,y+jiggle*.5,size,color,a*flicker*depth);
+  }
+  frostingRings(t);ctx.globalCompositeOperation='source-over';if(ink>0){const [sx,sy,sw,sh]=ASSETS.bbox;ctx.globalAlpha=ink*.94;ctx.drawImage(signature,sx,sy,sw,sh,n.x,n.y,n.w,n.h);ctx.globalAlpha=1;}
+ }
+ renderDust(t,started&&t>23.7);flushParticles();ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';
+ $('greeting').style.opacity=started?smooth((t-18.8)/1.8):0;$('wish').style.opacity=started?smooth((t-25.5)/1.8):0;
+ $('actions').style.opacity=started?smooth((t-26.7)/1.3):0;$('pause').style.opacity=started&&!ending?1:0;$('pause').style.color=night>.5?'#dccdb8':'#72634f';$('whisper').style.color=night>.5?'#dfcdb0':'#706552';$('pause-icon').style.filter='invert('+night+')';
+ if(ending&&!$('pause').hidden){$('pause').hidden=true;if(document.activeElement===$('pause'))$('replay').focus({preventScroll:true});}
+ else if(!ending&&$('pause').hidden)$('pause').hidden=false;
+}
+function setStage(t){const current=t<8.8?0:t<14?1:t<18.2?2:t<25.7?3:4;if(stage===current)return;stage=current;document.body.dataset.stage=['forming','cake','scatter','signature','letter'][current];
+ const lines=['','悦悦，许一个愿望。','','',''];$('whisper').textContent=lines[current];$('whisper').style.opacity=current===1?1:0;
+ $('actions').inert=current<4;$('pause').inert=!started||current===4;
+}
+function tick(now){requestAnimationFrame(tick);const dt=lastTime?Math.max(0,(now-lastTime)/1000):0;lastTime=now;if(document.hidden)return;
+ if(started&&!paused){elapsed=Math.min(CONFIG.duration,elapsed+dt);drawDirty=true;}else if(!started&&!reduced){ambient+=Math.min(dt,.05);drawDirty=true;}
+ if(!paused&&elapsed>=CONFIG.duration&&!reduced){ambient+=Math.min(dt,.05);drawDirty=true;}
+ if(!drawDirty)return;drawDirty=false;render(started?elapsed:ambient);if(started)setStage(elapsed);document.body.dataset.elapsed=elapsed.toFixed(2);
+}
+/* 保留经典《生日快乐》音乐盒旋律。音色更柔和，末尾逐渐收音。 */
+let audio=null,master=null,reverb=null,voices=[],muted=false;
+function initAudio(){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)throw new Error('unsupported');audio=new AC();audio.onstatechange=()=>document.body.dataset.audioState=audio.state;master=audio.createGain();master.gain.value=muted?0:.27;const compressor=audio.createDynamicsCompressor();compressor.threshold.value=-14;compressor.ratio.value=3;master.connect(compressor);compressor.connect(audio.destination);reverb=audio.createConvolver();const len=audio.sampleRate*1.7,impulse=audio.createBuffer(2,len,audio.sampleRate);for(let channel=0;channel<2;channel++){const data=impulse.getChannelData(channel);for(let i=0;i<len;i++)data[i]=(Math.random()*2-1)*Math.pow(1-i/len,3)*.24;}reverb.buffer=impulse;const wet=audio.createGain();wet.gain.value=.22;reverb.connect(wet);wet.connect(master);}
+function bell(midi,time,duration,volume){const hz=440*Math.pow(2,(midi-69)/12),g=audio.createGain();g.gain.setValueAtTime(0,time);g.gain.linearRampToValueAtTime(volume,time+.009);g.gain.exponentialRampToValueAtTime(.001,time+duration+1.25);g.connect(master);g.connect(reverb);for(const [ratio,amp] of [[1,.76],[2,.16],[3.01,.055],[4.2,.018]]){const o=audio.createOscillator(),part=audio.createGain();o.type='sine';o.frequency.value=hz*ratio;part.gain.value=amp;o.connect(part);part.connect(g);o.start(time);o.stop(time+duration+1.3);voices.push(o);o.onended=()=>{part.disconnect();const i=voices.indexOf(o);if(i>=0)voices.splice(i,1);};}}
+function score(){if(!audio)return;for(const o of voices){try{o.stop();}catch{}}voices=[];master.gain.cancelScheduledValues(audio.currentTime);master.gain.setValueAtTime(muted?0:.27,audio.currentTime);
+ const notes=[[72,.5],[72,.5],[74,1],[72,1],[77,1],[76,2],[72,.5],[72,.5],[74,1],[72,1],[79,1],[77,2],[72,.5],[72,.5],[84,1],[81,1],[77,1],[76,1],[74,1],[82,.5],[82,.5],[81,1],[77,1],[79,1],[77,2]],chords=[[53,57,60],[48,52,55],[53,57,60],[55,59,62],[53,57,60],[50,53,57],[58,62,65],[53,57,60]],beat=60/102,begin=audio.currentTime+1.1;
+ for(let repeat=0;repeat<2;repeat++){let cursor=repeat*24;for(const [note,length] of notes){bell(note,begin+cursor*beat,length*beat,repeat?.25:.28);cursor+=length;}for(let bar=0;bar<8;bar++)for(let k=0;k<6;k++)bell(chords[bar][k%3]+(k>=3?12:0),begin+(repeat*24+bar*3+k*.5)*beat,.7,.075);}
+ bell(65,begin+48*beat,1,.13);bell(69,begin+48*beat+.04,1,.10);bell(72,begin+48*beat+.08,1,.12);
+}
+function syncPause(){if(!paused)lastTime=performance.now();$('pause-label').textContent=paused?'继续':'暂停';$('pause-icon').src=paused?ASSETS.play:ASSETS.pause;$('pause').setAttribute('aria-label',paused?'继续动画和音乐':'暂停动画和音乐');if(audio)(paused?audio.suspend():audio.resume()).catch(()=>{});drawDirty=true;}
+async function start(){if(started||!ready)return;started=true;paused=false;elapsed=0;lastTime=performance.now();stage=-1;document.body.classList.add('started');$('pause').inert=false;$('start').disabled=true;$('intro').classList.add('leaving');drawDirty=true;setStage(0);setTimeout(()=>{$('intro').hidden=true;$('pause').focus({preventScroll:true});},1050);try{if(!audio)initAudio();await audio.resume();score();}catch{$('audio-note').textContent='声音暂未播放，可以继续观看。';}}
+function togglePause(){if(!started)return;paused=!paused;hiddenPause=false;syncPause();}
+async function replay(){if(!started)return;elapsed=0;paused=false;stage=-1;hiddenPause=false;$('pause').hidden=false;setStage(0);syncPause();render(0);if(audio){await audio.resume();score();}}
+function toggleSound(){muted=!muted;$('sound-icon').src=muted?ASSETS.muted:ASSETS.music;$('sound').setAttribute('aria-pressed',String(!muted));$('sound').setAttribute('aria-label',muted?'开启音乐':'关闭音乐');$('sound').title=muted?'开启音乐':'关闭音乐';if(master)master.gain.setTargetAtTime(muted?0:.27,audio.currentTime,.15);}
+document.addEventListener('visibilitychange',()=>{if(!started)return;if(document.hidden&&!paused){paused=true;hiddenPause=true;syncPause();}else if(!document.hidden&&hiddenPause){paused=false;hiddenPause=false;syncPause();}});
+document.addEventListener('keydown',e=>{if(e.code==='Space'&&started&&e.target===document.body){e.preventDefault();togglePause();}});
+$('start').addEventListener('click',start);$('sound').addEventListener('click',toggleSound);$('pause').addEventListener('click',togglePause);$('replay').addEventListener('click',replay);window.addEventListener('resize',resize);
+async function load(){try{signature.src=ASSETS.signature;await Promise.all([signature.decode(),document.fonts.load('24px BirthdaySerif')]);sampleSignature();ready=true;resize();createParticles();$('start').disabled=false;$('start').textContent='展开这份祝福';document.body.dataset.ready='true';
+ const p=new URLSearchParams(location.search).get('preview');if(p!==null&&Number.isFinite(Number(p))){started=true;paused=true;elapsed=Math.max(0,Math.min(Number(p),CONFIG.duration));document.body.classList.add('started');$('intro').hidden=true;syncPause();setStage(elapsed);}drawDirty=true;
+ }catch{$('start').textContent='请重新打开这份祝福';$('audio-note').textContent='字迹尚未载入，请刷新后重试。';document.body.dataset.ready='error';}}
+resize();load();requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>
