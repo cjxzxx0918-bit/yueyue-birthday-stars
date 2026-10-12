@@ -2,6 +2,10 @@
 
 一个可离线播放的生日祝福动画：星光聚成三层生日蛋糕，再由同一组粒子汇成「悦悦生日快乐」。
 
+**在线观看：[yueyue-birthday-stars.pages.dev](https://yueyue-birthday-stars.pages.dev/)**
+
+链接不包含账号名，无需登录。可复制到微信，打开后点击「开启生日惊喜」。
+
 ![粒子蛋糕与生日祝福](assets/preview.jpg)
 
 ## 体验
